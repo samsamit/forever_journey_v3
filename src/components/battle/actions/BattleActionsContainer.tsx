@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { Button } from "../../ui/button"
 import { IconArrowBackUp } from "@tabler/icons-react"
 import { useBattleStore } from "@/stores/battle/battleStore"
 import BattleMenuActions from "./BattleMenuActions"
+import SelectedBattleAction from "./SelectedBattleAction"
 
 interface MenuAction {
   label: string
@@ -48,7 +49,11 @@ const BattleActionsContainer = () => {
     null
   )
 
-  const { selectedAction, onActionSelect } = useBattleStore()
+  const {
+    selectedAction,
+    setSelectedAction: onActionSelect,
+    battleState,
+  } = useBattleStore()
 
   const onMenuItemClick = ([actionName, action]: [string, MenuItem]) => {
     if (isAction(action)) {
@@ -67,6 +72,32 @@ const BattleActionsContainer = () => {
     return battleActions
   }
 
+  const MenuContent: FC = () => {
+    switch (battleState) {
+      case "SELECT_CHARACTER":
+        return (
+          <div className="p-2 flex justify-center">
+            <h2>Select a character</h2>
+          </div>
+        )
+      case "SELECT_ACTION":
+        return (
+          <BattleMenuActions
+            onMenuItemClick={onMenuItemClick}
+            currentMenu={currentActionItems()}
+          />
+        )
+      case "SELECT_TARGETS":
+        return (
+          <SelectedBattleAction
+            selectedAction={selectedAction}
+            onConfirmAction={() => void 0}
+            onCancelAction={() => onActionSelect(null)}
+          />
+        )
+    }
+  }
+
   return (
     <div className="p-4 flex flex-col border border-cyan-300 w-screen gap-4">
       <div className="flex justify-between items-center">
@@ -81,20 +112,7 @@ const BattleActionsContainer = () => {
           </Button>
         )}
       </div>
-      {selectedAction ? (
-        <div className="flex gap-4 items-center">
-          <p className="leading-none">SelectedAction: {selectedAction}</p>
-          <Button variant={"outline"}>Confirm</Button>
-          <Button variant={"outline"} onClick={() => onActionSelect(null)}>
-            Cancel
-          </Button>
-        </div>
-      ) : (
-        <BattleMenuActions
-          onMenuItemClick={onMenuItemClick}
-          currentMenu={currentActionItems()}
-        />
-      )}
+      <MenuContent />
     </div>
   )
 }

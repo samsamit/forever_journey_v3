@@ -10,13 +10,19 @@ interface CharacterCardProps {
 }
 const CharacterCard = (props: CharacterCardProps) => {
   const { name, id } = props.character
-  const { onCharacterSelect, selectedCharacter } = useBattleStore()
+  const {
+    setSelectedCharacter: onCharacterSelect,
+    selectedCharacter,
+    targetCharacters,
+  } = useBattleStore()
+  console.log(targetCharacters)
   return (
     <Card
       className={`w-fit hover:bg-slate-500 cursor-pointer ${
         selectedCharacter === id && "border-green-500"
-      }`}
-      // onClick={() => () => startTransition(() => selectCharacter(id))}
+      }
+      ${targetCharacters.includes(id) && "outline outline-amber-500"}`}
+      onClick={() => onCharacterSelect(id)}
     >
       <CardHeader>
         <CardTitle>{name}</CardTitle>

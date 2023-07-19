@@ -1,20 +1,53 @@
+import { BattleState } from "@/types/battle/battleTypes"
 import { UUID } from "crypto"
 import { create } from "zustand"
 export interface BattleStore {
+  targetCharacters: UUID[]
   selectedCharacter: UUID | null
   selectedAction: string | null
-  onCharacterSelect: (id: UUID | null) => void
-  onActionSelect: (actionKey: string | null) => void
+  battleState: BattleState
 }
-export const useBattleStore = create<BattleStore>((set) => ({
-  selectedCharacter: null,
-  selectedAction: null,
-  onCharacterSelect: (id) => {
-    set((state) => ({ selectedCharacter: id }))
-    console.log("character click: ", id)
-  },
-  onActionSelect: (actionKey) => {
-    set((state) => ({ selectedAction: actionKey }))
-    console.log("Action selected: ", actionKey)
-  },
-}))
+
+interface BattleStoreAction {
+  setSelectedCharacter: (id: UUID | null) => void
+  setSelectedAction: (actionKey: string | null) => void
+}
+
+export const useBattleStore = create<BattleStore & BattleStoreAction>(
+  (set) => ({
+    selectedCharacter: null,
+    selectedAction: null,
+    targetCharacters: [],
+    battleState: "SELECT_CHARACTER",
+    setSelectedCharacter: (id) => {
+      set((state) => {
+        if (state.selectedAction) {
+          if (!id) return state
+          if (state.targetCharacters.includes(id)) {
+            return {
+              targetCharacters: state.targetCharacters.filter((x) => x !== id),
+              battleState: "SELECT_CHARACTER",
+            }
+          }
+          return {
+            targetCharacters: [...state.targetCharacters, id],
+          }
+        }
+        const isAlreadySelected = state.selectedCharacter === id
+        return {
+          selectedCharacter: isAlreadySelected ? null : id,
+          battleState: isAlreadySelected ? "SELECT_CHARACTER" : "SELECT_ACTION",
+        }
+      })
+      console.log("character click: ", id)
+    },
+    setSelectedAction: (actionKey) => {
+      set((state) => ({
+        selectedAction: actionKey,
+        targetCharacters: actionKey ? state.targetCharacters : [],
+        battleState: actionKey ? "SELECT_TARGETS" : "SELECT_ACTION",
+      }))
+      console.log("Action selected: ", actionKey)
+    },
+  })
+)
