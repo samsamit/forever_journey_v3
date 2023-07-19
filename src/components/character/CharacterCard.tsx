@@ -16,7 +16,7 @@ const CharacterCard = (props: CharacterCardProps) => {
       className={`w-fit hover:bg-slate-500 cursor-pointer ${
         selectedCharacter === id && "border-green-500"
       }`}
-      onClick={() => onCharacterSelect(id)}
+      // onClick={() => () => startTransition(() => selectCharacter(id))}
     >
       <CardHeader>
         <CardTitle>{name}</CardTitle>

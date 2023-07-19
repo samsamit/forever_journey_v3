@@ -1,14 +1,36 @@
+import {
+  LoginButton,
+  RegisterButton,
+  LogoutButton,
+  ProfileButton,
+} from "@/components/auth/AuthButtons"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import Link from "next/link"
+import { authOptions } from "./api/auth/[...nextauth]/route"
+import { getServerSession } from "next-auth"
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions)
+  console.log("session", session)
   return (
-    <main className="flex min-h-screen flex-col gap-1 items-center p-24">
+    <main className="flex gap-4 min-h-screen flex-col items-center p-24">
       <h1>Home</h1>
-      <Button variant={"outline"} asChild>
-        <Link href="/battle">Battle</Link>
-      </Button>
+      <div className="flex flex-col gap-4 w-3/12">
+        {session ? (
+          <>
+            <LogoutButton />
+            <ProfileButton />
+            <Button variant={"outline"} asChild>
+              <Link href="/battle">Battle</Link>
+            </Button>
+          </>
+        ) : (
+          <>
+            <LoginButton />
+            <RegisterButton />
+          </>
+        )}
+      </div>
     </main>
   )
 }
