@@ -1,27 +1,65 @@
+import { db } from "@/lib/db"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import NextAuth, { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/sign-in",
+  },
   providers: [
-    CredentialsProvider({
-      name: "email",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
         },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize() {
-        const user = { id: "1", name: "Admin", email: "admin@admin.com" }
-        return user
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id
+        session.user.email = token.email
+        session.user.name = token.name
+      }
+      return session
+    },
+    async jwt({ token, user }) {
+      const dbUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      })
+      if (!dbUser) {
+        token.id = user!.id
+        return token
+      }
+      if (!dbUser.name) {
+        await db.user.update({
+          where: {
+            id: dbUser.id,
+          },
+          data: {
+            name: user.name,
+          },
+        })
+      }
+      return dbUser
+    },
+    redirect() {
+      return "/"
+    },
+  },
 }
 
 const handler = NextAuth(authOptions)

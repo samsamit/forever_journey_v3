@@ -1,6 +1,5 @@
 import {
   LoginButton,
-  RegisterButton,
   LogoutButton,
   ProfileButton,
 } from "@/components/auth/AuthButtons"
@@ -27,7 +26,6 @@ export default async function Home() {
         ) : (
           <>
             <LoginButton />
-            <RegisterButton />
           </>
         )}
       </div>
