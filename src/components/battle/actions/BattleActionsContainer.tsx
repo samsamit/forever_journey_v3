@@ -99,7 +99,7 @@ const BattleActionsContainer = () => {
   }
 
   return (
-    <div className="p-4 flex flex-col border border-cyan-300 w-screen gap-4">
+    <div className="p-4 flex flex-col border w-screen gap-4">
       <div className="flex justify-between items-center">
         <h2>Battle Action Selection</h2>
         {selectedMenuAction && (

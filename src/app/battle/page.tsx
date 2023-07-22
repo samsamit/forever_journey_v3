@@ -6,14 +6,16 @@ import React from "react"
 
 const BattlePage = () => {
   return (
-    <div className="flex flex-col h-screen justify-between">
+    <>
       <BattleStoreInitializer selectedCharacter={null} />
-      <div className="p-6 flex flex-col gap-4">
-        <h1>Battle</h1>
-        <BattleContainer />
+      <div className="page-container">
+        <div className="p-6 flex flex-col gap-4 flex-grow">
+          <h1>Battle</h1>
+          <BattleContainer />
+        </div>
+        <BattleActionsContainer />
       </div>
-      <BattleActionsContainer />
-    </div>
+    </>
   )
 }
 export default BattlePage

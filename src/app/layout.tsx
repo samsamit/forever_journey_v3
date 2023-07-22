@@ -1,4 +1,5 @@
-import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import "./global.css"
 import { Inter } from "next/font/google"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -15,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className + `box-border`}>{children}</body>
+      <body className={inter.className + `box-border h-screen w-screen`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

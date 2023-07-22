@@ -10,7 +10,6 @@ import { getServerSession } from "next-auth"
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
-  console.log("session", session)
   return (
     <main className="flex gap-4 min-h-screen flex-col items-center p-24">
       <h1>Home</h1>
@@ -19,10 +18,13 @@ export default async function Home() {
           <>
             <LogoutButton />
             <ProfileButton />
-            <Button variant={"outline"} asChild>
+            <Button asChild>
               <Link href="/battle">Battle</Link>
             </Button>
-            <Button variant={"outline"} asChild>
+            <Button asChild>
+              <Link href="/partySelect">Start adventure</Link>
+            </Button>
+            <Button asChild>
               <Link href="/admin">Admin</Link>
             </Button>
           </>

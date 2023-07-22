@@ -2,27 +2,21 @@
 
 import React from "react"
 import { Card, CardHeader, CardTitle } from "../ui/card"
-import { Character } from "@/types/character/characterType"
 import { useBattleStore } from "@/stores/battle/battleStore"
+import { Character } from "@prisma/client"
 
 interface CharacterCardProps {
   character: Character
+  onCharacterClick?: (id: string) => void
 }
-const CharacterCard = (props: CharacterCardProps) => {
-  const { name, id } = props.character
-  const {
-    setSelectedCharacter: onCharacterSelect,
-    selectedCharacter,
-    targetCharacters,
-  } = useBattleStore()
-  console.log(targetCharacters)
+const CharacterCard = ({ character, onCharacterClick }: CharacterCardProps) => {
+  const { name, id } = character
   return (
     <Card
-      className={`w-fit hover:bg-slate-500 cursor-pointer ${
-        selectedCharacter === id && "border-green-500"
-      }
-      ${targetCharacters.includes(id) && "outline outline-amber-500"}`}
-      onClick={() => onCharacterSelect(id)}
+      className={`w-fit ${
+        onCharacterClick ? "hover:bg-slate-500 cursor-pointer" : ""
+      }`}
+      onClick={() => onCharacterClick && onCharacterClick(id)}
     >
       <CardHeader>
         <CardTitle>{name}</CardTitle>

@@ -2,7 +2,6 @@
 
 import { useRef } from "react"
 import { BattleStore, useBattleStore } from "./battleStore"
-import { UUID } from "crypto"
 
 export const BattleStoreInitializer = ({
   selectedCharacter,

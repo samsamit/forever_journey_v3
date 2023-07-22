@@ -1,15 +1,14 @@
 import { BattleState } from "@/types/battle/battleTypes"
-import { UUID } from "crypto"
 import { create } from "zustand"
 export interface BattleStore {
-  targetCharacters: UUID[]
-  selectedCharacter: UUID | null
+  targetCharacters: string[]
+  selectedCharacter: string | null
   selectedAction: string | null
   battleState: BattleState
 }
 
 interface BattleStoreAction {
-  setSelectedCharacter: (id: UUID | null) => void
+  setSelectedCharacter: (id: string | null) => void
   setSelectedAction: (actionKey: string | null) => void
 }
 

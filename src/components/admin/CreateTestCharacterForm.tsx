@@ -34,7 +34,9 @@ const CreateTestCharacterForm = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof newCharacterFormSchema>) => {
-    startTransition(() => createCharacter(values.name))
+    startTransition(() =>
+      createCharacter(values.name).finally(() => form.reset())
+    )
   }
   return (
     <Form {...form}>
@@ -48,12 +50,11 @@ const CreateTestCharacterForm = () => {
               <FormControl>
                 <Input {...field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button disabled={isPending} type="submit" variant={"outline"}>
+        <Button disabled={isPending} type="submit">
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit
         </Button>

@@ -19,12 +19,7 @@ export const LoginButton = () => {
     }
   }
   return (
-    <Button
-      disabled={loading}
-      variant={"outline"}
-      className="w-full"
-      onClick={login}
-    >
+    <Button disabled={loading} className="w-full" onClick={login}>
       {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       Sign in
     </Button>
@@ -33,7 +28,7 @@ export const LoginButton = () => {
 
 export const LogoutButton = () => {
   return (
-    <Button variant={"outline"} className="w-full" onClick={() => signOut()}>
+    <Button className="w-full" onClick={() => signOut()}>
       Sign Out
     </Button>
   )
@@ -41,7 +36,7 @@ export const LogoutButton = () => {
 
 export const ProfileButton = () => {
   return (
-    <Button variant={"outline"} asChild>
+    <Button asChild>
       <Link href="/profile">Profile</Link>
     </Button>
   )
