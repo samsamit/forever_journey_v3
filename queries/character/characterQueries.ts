@@ -11,7 +11,11 @@ export const getUserCharacters = async () => {
       id: session.user.id,
     },
     select: {
-      characters: true,
+      characters: {
+        where: {
+          enemy: false,
+        },
+      },
     },
   })
   return user?.characters

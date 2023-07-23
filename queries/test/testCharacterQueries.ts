@@ -7,13 +7,14 @@ export const createCharacter = async (name: string) => {
   const session = await getAuthSession()
   const res = await db.user.update({
     where: {
-      id: session?.user.id,
+      id: session.user.id,
     },
     data: {
       characters: {
         create: [
           {
             name,
+            enemy: false,
           },
         ],
       },

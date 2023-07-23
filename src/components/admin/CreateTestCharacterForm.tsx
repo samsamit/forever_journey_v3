@@ -33,7 +33,7 @@ const CreateTestCharacterForm = () => {
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof newCharacterFormSchema>) => {
+  const onSubmit = (values: z.infer<typeof newCharacterFormSchema>) => {
     startTransition(() =>
       createCharacter(values.name).finally(() => form.reset())
     )

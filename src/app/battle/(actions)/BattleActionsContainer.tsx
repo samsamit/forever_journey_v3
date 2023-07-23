@@ -1,7 +1,7 @@
 "use client"
 
 import React, { FC, useState } from "react"
-import { Button } from "../../ui/button"
+import { Button } from "../../../components/ui/button"
 import { IconArrowBackUp } from "@tabler/icons-react"
 import { useBattleStore } from "@/stores/battle/battleStore"
 import BattleMenuActions from "./BattleMenuActions"

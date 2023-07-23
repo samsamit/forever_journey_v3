@@ -66,4 +66,8 @@ const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
 
-export const getAuthSession = () => getServerSession(authOptions)
+export const getAuthSession = async () => {
+  const session = await getServerSession(authOptions)
+  if (!session) throw Error("No session")
+  return session
+}

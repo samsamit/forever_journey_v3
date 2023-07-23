@@ -1,5 +1,5 @@
 import React from "react"
-import { getUserCharacters } from "../queries/character/characterQueries"
+import { getUserCharacters } from "../../../queries/character/characterQueries"
 import PartySelect from "@/components/partySelect/PartySelect"
 
 const page = async () => {

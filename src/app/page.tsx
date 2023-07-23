@@ -22,7 +22,7 @@ export default async function Home() {
               <Link href="/battle">Battle</Link>
             </Button>
             <Button asChild>
-              <Link href="/partySelect">Start adventure</Link>
+              <Link href="/adventurePlanner">Start adventure</Link>
             </Button>
             <Button asChild>
               <Link href="/admin">Admin</Link>
